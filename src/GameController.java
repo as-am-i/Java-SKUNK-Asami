@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 
 public class GameController {
 	private ArrayList<Player> players;
@@ -99,25 +98,23 @@ public class GameController {
 		}
 		System.out.println();
 	}
-	
-	public void printRank(ArrayList<Player> sortedPlayers) {
-		System.out.println("\n[RANK]");
-		printPlayersByRank(sortedPlayers);
 
-		System.out.println("Congratulations on " + sortedPlayers.get(0).getName() + "!");
+	public void printRank() {
+		System.out.println("\n[RANK]");
+		printPlayersByRank();
+
+		System.out.println("Congratulations on " + players.get(0).getName() + "!");
 		System.out.println("\nThank you for playing!");
 	}
 
-	public void printPlayersByRank(ArrayList<Player> sortedPlayers) {
+	public void printPlayersByRank() {
 		for (int rank = 1; rank < players.size() + 1; rank++) {
-			System.out.println(rank + " - " + sortedPlayers.get(rank-1).getName());
+			System.out.println(rank + " - " + players.get(rank - 1).getName());
 		}
 	}
 
-	public ArrayList<Player> sortByTotalScores() {
-		ArrayList<Player> sortedPlayers = players;
-		Collections.sort(sortedPlayers, new PlayerSortByTotalScoresComparator());
-		return sortedPlayers;
+	public void sortByTotalScores() {
+		Collections.sort(players, new PlayerSortByTotalScoresComparator());
 	}
 
 	public void printDices(int valueOfDice1, int valueOfDice2, int sumOfDices) {
@@ -158,10 +155,9 @@ public class GameController {
 					activePlayer.setRoundScores(0);
 				}
 				System.out.println("Oops! \"single 1\" happens! \nThe players who stayed up lost the round scores!");
-				//round.incrementRound();
+				// round.incrementRound();
 				activePlayers.clear();
-				
-				
+
 			} else {
 				System.out.println("Roll the dices again, since everyone is staying up");
 			}
@@ -211,7 +207,7 @@ public class GameController {
 
 			// TODO print the current roundScores and totalScores BEFORE rolling
 			printScoresAndConditions();
-			
+
 			boolean stop = false;
 			while (stop == false) {
 				// Roll dices and store the sum of these values

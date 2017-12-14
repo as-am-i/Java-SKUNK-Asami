@@ -20,7 +20,7 @@ public class PlayerComputer extends Player {
 	@Override
 	public String chooseName() {
 		System.out.println("Who will play with you? (Type \"default\" for " + this.getName() + ")");
-		Scanner scan = new Scanner(System.in);	
+		Scanner scan = new Scanner(System.in);
 
 		String name = scan.next();
 
