@@ -34,7 +34,6 @@ public class GameController {
 	}
 
 	public void playerSetUp() {
-		// Name
 		for (Player player : players) {
 			String answer = player.chooseName();
 			player.setName(answer);
@@ -99,12 +98,8 @@ public class GameController {
 		System.out.println();
 	}
 
-	public void printRank() {
-		System.out.println("\n[RANK]");
-		printPlayersByRank();
-
-		System.out.println("Congratulations on " + players.get(0).getName() + "!");
-		System.out.println("\nThank you for playing!");
+	public void sortByTotalScores() {
+		Collections.sort(players, new PlayerSortByTotalScoresComparator());
 	}
 
 	public void printPlayersByRank() {
@@ -113,14 +108,16 @@ public class GameController {
 		}
 	}
 
-	public void sortByTotalScores() {
-		Collections.sort(players, new PlayerSortByTotalScoresComparator());
+	public void printRank() {
+		System.out.println("\n[RANK]");
+		printPlayersByRank();
+
+		// message
+		System.out.println("Congratulations on " + players.get(0).getName() + "!\nThank you for playing!");
 	}
 
-	public void printDices(int valueOfDice1, int valueOfDice2, int sumOfDices) {
+	public void printDices(int valueOfDice1, int valueOfDice2) {
 		System.out.println("\n-------- Rolling dices... --------");
-
-		// print each value
 		System.out.println("dice1: " + valueOfDice1);
 		System.out.println("dice2: " + valueOfDice2);
 		System.out.println("----------------------------------");
@@ -128,7 +125,7 @@ public class GameController {
 
 	public void branchOff(int sumOfDices) {
 		// check who are staying up
-		setActivePlayer();
+		// setActivePlayer();
 
 		// double 1
 		// total score should be 0, and go to the next round
@@ -139,7 +136,6 @@ public class GameController {
 					activePlayer.setTotalScores(0);
 				}
 				System.out.println("Oops! \"double 1\" happens! \nThe players who stayed up lost the total scores!");
-				// round.incrementRound();
 				activePlayers.clear();
 			} else {
 				System.out.println("Roll the dices again, since everyone is staying up");
@@ -155,17 +151,15 @@ public class GameController {
 					activePlayer.setRoundScores(0);
 				}
 				System.out.println("Oops! \"single 1\" happens! \nThe players who stayed up lost the round scores!");
-				// round.incrementRound();
 				activePlayers.clear();
-
 			} else {
 				System.out.println("Roll the dices again, since everyone is staying up");
 			}
 		}
 
 		// except for 1
-		// add the scores, ask if the player wants to stay up, check if there's someone
-		// still staying up
+		// add the scores, ask if the player wants to stay up,
+		// and check if there's someone still staying up
 		else if (dice1.getValueOfDice() != 1 && dice2.getValueOfDice() != 1) {
 			for (Player activePlayer : activePlayers) {
 				activePlayer.addScores(sumOfDices);
@@ -180,6 +174,7 @@ public class GameController {
 				int roundScores = player1.getRoundScores();
 				player1.chooseCondition(round, numOfActivePlayers, totalScores, roundScores);
 
+				// print condition
 				if (player1.getStayingUp() == true) {
 					System.out.println(player1.getName() + " - stay");
 				} else {
@@ -187,7 +182,10 @@ public class GameController {
 				}
 
 			}
+
+			// reflect the condition to active players
 			setActivePlayer();
+
 		} // the end of else if condition(neither 1)
 	} // the end of this method
 
@@ -197,7 +195,6 @@ public class GameController {
 		// 2. when someone is sitting down AND 1 comes up
 
 		for (int rTimes = 0; rTimes < 5; rTimes++) {
-			// round.confirmNextRound();
 			round.setIsNextRound(false);
 			round.printRoundName();
 
@@ -210,16 +207,18 @@ public class GameController {
 
 			boolean stop = false;
 			while (stop == false) {
-				// Roll dices and store the sum of these values
+				// TODO Roll dices and store the sum of these values
 				int valueOfDice1 = dice1.rollDice();
 				int valueOfDice2 = dice2.rollDice();
 				int sumOfDices = valueOfDice1 + valueOfDice2;
 
 				// TODO show values of dices
-				printDices(valueOfDice1, valueOfDice2, sumOfDices);
+				printDices(valueOfDice1, valueOfDice2);
 
-				// go in different directions
+				// TODO go in different directions
 				branchOff(sumOfDices);
+
+				// TODO set the break point for while loop
 				if (activePlayers.isEmpty()) {
 					round.incrementRound();
 					stop = true;
